@@ -14,7 +14,7 @@ def printTextOnImage(imagePath, text):
         font = ImageFont.truetype(fontPath, size=int(height/9))
         txtImage = Image.new('RGBA', (width, height), (255, 255, 255, 0))
         draw = ImageDraw.Draw(txtImage)
-        draw.text((width/4, height/4), text, fill=(0, 0, 0), font=font, align='center')
+        draw.text((0, height/4), text, fill=(0, 0, 0), font=font, align='center')
         timeStr = time.strftime('%Y%m%d-%H:%M:%S', time.localtime(time.time()))
         draw.text((0, height/4 + height/9 + 10), timeStr, fill=(0, 0, 0), font=font, align='center')
         out = Image.alpha_composite(oriImage, txtImage)
