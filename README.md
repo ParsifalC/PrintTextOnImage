@@ -9,3 +9,7 @@ pyinstaller --onefile --add-binary='/System/Library/Frameworks/Tk.framework/Tk':
 ## How To Use
 
 Copy /dist/PrintTextOnImage to your `/usr/local/bin`
+
+```shell
+PrintTextOnImage your_directory_of_images text1 text2
+```
