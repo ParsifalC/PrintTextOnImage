@@ -5,18 +5,23 @@ def printDateOnImage(imagePath):
     timeStr = time.strftime('%Y%m%d-%H:%M:%S', time.localtime(time.time()))
     printTextOnImage(imagePath, timeStr)
 
-def printTextOnImage(imagePath, text):
+def printTextOnImage(imagePath, textList=[]):
     imgType = imghdr.what(imagePath)
     if imgType == 'png':
         oriImage = Image.open(imagePath).convert('RGBA')
         width,height = oriImage.size
         fontPath = resource_path(resource_path(os.path.join("res", "Roboto-Bold.ttf")))
-        font = ImageFont.truetype(fontPath, size=int(height/9))
+        fontHeight = height/9
+        font = ImageFont.truetype(fontPath, size=int(fontHeight))
         txtImage = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+        # 时间
         draw = ImageDraw.Draw(txtImage)
-        draw.text((0, height/4), text, fill=(0, 0, 0), font=font, align='center')
         timeStr = time.strftime('%Y%m%d-%H:%M:%S', time.localtime(time.time()))
-        draw.text((0, height/4 + height/9 + 10), timeStr, fill=(0, 0, 0), font=font, align='center')
+        draw.text((0, height/10), timeStr, fill=(0, 0, 0), font=font, align='center')
+
+        for text in textList:
+            draw.text((0, height/3 + textList.index(text) * fontHeight), text, fill=(0, 0, 0), font=font, align='center')
+        
         out = Image.alpha_composite(oriImage, txtImage)
         out.save(imagePath)
 
@@ -29,15 +34,13 @@ def resource_path(relative_path):
 
 def getDirPath(argv):
     dirPath = None
-    text = ''
-
+    textList = []
     if len(argv) > 2:
         dirPath = argv[1]
         for str in argv[2:]:
-            text += str
+            textList.append(str)
     else:
         dirPath = os.getcwd()
-        text = time.strftime('%Y%m%d-%H:%M:%S', time.localtime(time.time()))
 
     imageList = os.listdir(dirPath)
 
@@ -48,7 +51,7 @@ def getDirPath(argv):
             else:
                 absolutePath = path
 
-            printTextOnImage(imagePath=absolutePath, text=text)
+            printTextOnImage(imagePath=absolutePath, textList=textList)
             print('添加'+absolutePath+'日期成功')
         else:
             print('不需要添加'+path)
