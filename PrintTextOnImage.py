@@ -1,10 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 import time, os, sys, imghdr
 
-def printDateOnImage(imagePath):
-    timeStr = time.strftime('%Y%m%d-%H:%M:%S', time.localtime(time.time()))
-    printTextOnImage(imagePath, timeStr)
-
 def printTextOnImage(imagePath, textList=[]):
     imgType = imghdr.what(imagePath)
     if imgType == 'png':
